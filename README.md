@@ -10,4 +10,4 @@ You can also place the entirety of the image-sidebar folder in the `%YOURWORDPRE
 
 ## How-To-Use
 
-Install the plugin then drag it into your sidebar via the widgets page.  Input a page slug and hit save.  This slug represents the page on which you want to display images.  If you try to select images before hitting save after putting in a slug, the images will not be saved.  This may be fixed at a later date.  If no image is specified, a blank image is selected.
+Install the plugin then drag it into your sidebar via the widgets page.  Input a page slug and some images and hit save.  This slug represents the page on which you want to display images. Once you hit save the widget will allow you to add more to it.  Once values are saved, the widget also displays a preview image.

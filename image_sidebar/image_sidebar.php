@@ -36,26 +36,24 @@ class jasentin_image_sidebar extends WP_Widget {
                 esc_attr( $value ),
                 'Page Slug'
             );
-            if ($value !== '') {
-                $img = $firstimages[$value] == '' ? $default_img_url : $firstimages[$value];
-                $output_html[] = sprintf('<div style="width:100%;overflow:hidden;height:150px;background-image:url(%1$s);background-repeat:no-repeat;"></div>', $img);
-                $output_html[] = sprintf(
-                    '<p><label for="%1$s[%2$s]">%4$s</label><input name="%1$s[%2$s]" type="text" value="%3$s" class="widefat"><button class="upload_image_button button button-primary">Upload Image</button></p>',
-                    $this->get_field_name( 'first_image' ),
-                    $value,
-                    esc_url( $firstimages[$value] ),
-                    'Image 1'
-                );
-                $img = $secondimages[$value] == '' ? $default_img_url : $secondimages[$value];
-                $output_html[] = sprintf('<div style="width:100%;overflow:hidden;height:150px;background-image:url(%1$s);background-repeat:no-repeat;"></div>', $img);
-                $output_html[] = sprintf(
-                    '<p><label for="%1$s[%2$s]">%4$s</label><input name="%1$s[%2$s]" type="text" value="%3$s" class="widefat"><button class="upload_image_button button button-primary">Upload Image</button></p>',
-                    $this->get_field_name( 'second_image' ),
-                    $value,
-                    esc_url( $secondimages[$value] ),
-                    'Image 2'
-                );
-            }
+            $img = $firstimages[$pages_counter];
+            if ($img != '') { $output_html[] = sprintf('<div style="width:100%;overflow:hidden;height:150px;background-image:url(%1$s);background-repeat:no-repeat;"></div>', $img); }
+            $output_html[] = sprintf(
+                '<p><label for="%1$s[%2$s]">%4$s</label><input name="%1$s[%2$s]" type="text" value="%3$s" class="widefat"><button class="upload_image_button button button-primary">Upload Image</button></p>',
+                $this->get_field_name( 'first_image' ),
+                $pages_counter,
+                esc_url( $firstimages[$pages_counter] ),
+                'Image 1'
+            );
+            $img = $secondimages[$pages_counter];
+            if ($img != '') { $output_html[] = sprintf('<div style="width:100%;overflow:hidden;height:150px;background-image:url(%1$s);background-repeat:no-repeat;"></div>', $img); }
+            $output_html[] = sprintf(
+                '<p><label for="%1$s[%2$s]">%4$s</label><input name="%1$s[%2$s]" type="text" value="%3$s" class="widefat"><button class="upload_image_button button button-primary">Upload Image</button></p>',
+                $this->get_field_name( 'second_image' ),
+                $pages_counter,
+                esc_url( $secondimages[$pages_counter] ),
+                'Image 2'
+            );
             $output_html[] = '</div>';
             $pages_counter += 1;
         }
@@ -68,13 +66,14 @@ class jasentin_image_sidebar extends WP_Widget {
         $instance['page_slug'] = array();
         if (isset ( $new_instance['page_slug'] )) {
             foreach ($new_instance['page_slug'] as $value) {
+                $key = array_search($value, $new_instance['page_slug']);
                 if ( '' !== trim($value) ) {
                     $instance['page_slug'][] = $value;
-                    if ($new_instance['first_image'][$value] !== '') {
-                        $instance['first_image'][$value] = $new_instance['first_image'][$value];
+                    if ($new_instance['first_image'][$key] !== '') {
+                        $instance['first_image'][$key] = $new_instance['first_image'][$key];
                     }
-                    if ($new_instance['second_image'][$value] !== '') {
-                        $instance['second_image'][$value] = $new_instance['second_image'][$value];
+                    if ($new_instance['second_image'][$key] !== '') {
+                        $instance['second_image'][$key] = $new_instance['second_image'][$key];
                     }
                 }
             }
@@ -91,15 +90,16 @@ class jasentin_image_sidebar extends WP_Widget {
         echo '<div class="widget-textarea">';
         $default_img_url = plugins_url('image_sidebar')."/images/default.png";
         $first_img_url = $default_img_url;
-        if (isset($instance['first_image'][$slug])) {
-            if ($instance['first_image'][$slug] !== '') {
-                $first_img_url = $instance['first_image'][$slug];
+        $key = array_search($slug, $instance['page_slug']);
+        if ($key !== false && isset($instance['first_image'][$key])) {
+            if ($instance['first_image'][$key] !== '') {
+                $first_img_url = $instance['first_image'][$key];
             }
         }
         $second_img_url = $default_img_url;
-        if (isset($instance['second_image'][$slug])) {
-            if ($instance['second_image'][$slug] !== '') {
-                $second_img_url = $instance['second_image'][$slug];
+        if ($key !== false && isset($instance['second_image'][$key])) {
+            if ($instance['second_image'][$key] !== '') {
+                $second_img_url = $instance['second_image'][$key];
             }
         }
         echo "<img class='img-responsive image-sidebar-image' src='".$first_img_url."'><img class='img-responsive image-sidebar-image' src='".$second_img_url."'>";
