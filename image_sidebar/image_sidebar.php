@@ -62,18 +62,18 @@ class jasentin_image_sidebar extends WP_Widget {
     }
 
     function update($new_instance, $old_instance) {
-        $instance = $old_instance;
         $instance['page_slug'] = array();
         if (isset ( $new_instance['page_slug'] )) {
             foreach ($new_instance['page_slug'] as $value) {
-                $key = array_search($value, $new_instance['page_slug']);
-                if ( '' !== trim($value) ) {
+                if ( trim($value) !== '' ) {
                     $instance['page_slug'][] = $value;
-                    if ($new_instance['first_image'][$key] !== '') {
-                        $instance['first_image'][$key] = $new_instance['first_image'][$key];
+                    $newInstanceKey = array_search($value, $new_instance['page_slug']);
+                    $instanceKey    = array_search($value, $instance['page_slug']);
+                    if ($new_instance['first_image'][$newInstanceKey] !== '') {
+                        $instance['first_image'][$instanceKey] = $new_instance['first_image'][$newInstanceKey];
                     }
-                    if ($new_instance['second_image'][$key] !== '') {
-                        $instance['second_image'][$key] = $new_instance['second_image'][$key];
+                    if ($new_instance['second_image'][$newInstanceKey] !== '') {
+                        $instance['second_image'][$instanceKey] = $new_instance['second_image'][$newInstanceKey];
                     }
                 }
             }
