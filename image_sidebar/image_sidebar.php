@@ -4,15 +4,20 @@
 Plugin Name: Image Sidebar
 Description: Will display up to two images on the sidebar.  These images are chosen based upon the page displayed.
 Author: James Sentinella
-Version: 0.1
+Version: 0.2
 Author URI: http://jasentin.com
 */
 
 class jasentin_image_sidebar extends WP_Widget {
 
-    function jasentin_image_sidebar() {
-        add_action( 'admin_enqueue_scripts', array($this,'scripts'));
-        parent::WP_Widget(false, $name = __('Image Sidebar', 'image_sidebar') );
+    function __construct() {
+        parent::__construct(
+            'image_sidebar',
+            __( 'Image Sidebar', 'textdomain' ),
+            [
+                'description' => __( 'Will display up to two images on the sidebar.  These images are chosen based upon the page displayed.', 'textdomain' )
+            ]
+            );
     }
 
     function form($instance) {
@@ -114,5 +119,8 @@ class jasentin_image_sidebar extends WP_Widget {
     }
 }
 
-add_action('widgets_init', create_function('', 'return register_widget("jasentin_image_sidebar");'));
+function jasentin_load_widget() {
+    return register_widget('jasentin_image_sidebar');
+}
+add_action('widgets_init', 'jasentin_load_widget');
 ?>
